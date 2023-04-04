@@ -1,0 +1,77 @@
+#include <iostream>
+#include <chrono>
+using namespace std;
+using namespace std::chrono;
+void push(int n);
+void pop() ;
+void Display();
+
+struct Node   // creating a structure called Node
+{
+   int data;
+   struct Node *next;
+};
+struct Node* top = NULL;
+
+void push(int n)  // function to push data into the stack
+{
+   struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
+   newNode->data = n;
+   newNode->next = top;
+   top = newNode;
+}
+
+void pop()  //funtion to pop data out of stack
+{
+   if(top==NULL)
+   {
+   cout<< "Error : Stack is empty"<< endl;
+   }
+   else 
+   {
+      top = top->next;
+   }
+}
+
+void Display() 
+{
+   struct Node* point;
+   point = top;
+   while (point != NULL) 
+   {
+      cout<< point->data <<" ";
+      point = point->next;
+   }
+    cout << endl;
+}
+
+int main() {
+    auto start = high_resolution_clock::now();
+    push(8);
+    push(10);
+    push(5);
+    push(11);  
+    push(15);
+    push(23);
+    push(6);
+    push(18);  
+    push(20);  
+    push(17);
+    Display();
+    pop();
+    pop();
+    pop();
+    pop();
+    pop();
+    Display();
+    push(4);
+    push(30);
+    push(3);
+    push(1);
+    Display();
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << "Time taken by function: "
+         << duration.count() << " microseconds" << endl;
+    return 0;
+}
