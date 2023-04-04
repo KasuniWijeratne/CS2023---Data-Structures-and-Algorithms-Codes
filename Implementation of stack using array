@@ -1,0 +1,81 @@
+#include <iostream>
+#include <chrono>
+using namespace std;
+using namespace std::chrono;
+
+int stack[20], top = -1;  //stack of length 20
+void push(int x);
+int pop();
+void Display();
+
+void push(int x)  //to insert elements into the stack
+{   
+    top ++;
+    if (top>sizeof(stack))
+    {
+        cout << "Error : Stack Overflow" << endl;
+    }
+    else
+    {
+        stack[top] = x;
+        
+    }
+}
+int pop()  //to remove elements from the stack
+{
+    if (top<=-1)
+    {
+        cout << "Error : Stack Overflow" << endl;
+    }
+    else
+    {
+        top--;
+        return stack[top+1];
+    }
+}
+void Display() //to display elements of the stack
+{
+    if (top ==-1)
+    {
+        cout << "Stack is empty" <<endl;
+    }
+    else
+    {
+        for(int i=top;i>=0;i--)
+        {
+            cout << stack[i] << " ";
+        }
+        cout << endl;
+    }
+}
+
+int main() {
+    auto start = high_resolution_clock::now();
+    push(8);
+    push(10);
+    push(5);
+    push(11);  
+    push(15);
+    push(23);
+    push(6);
+    push(18);  
+    push(20);  
+    push(17);
+    Display();
+    pop();
+    pop();
+    pop();
+    pop();
+    pop();
+    Display();
+    push(4);
+    push(30);
+    push(3);
+    push(1);
+    Display();
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << "Time taken by function: "
+         << duration.count() << " microseconds" << endl;
+    return 0;
+}
