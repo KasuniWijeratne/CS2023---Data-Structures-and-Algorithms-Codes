@@ -1,0 +1,133 @@
+#include <iostream>
+using namespace std;
+
+struct node {
+  int key;
+  struct node *left, *right;
+};
+
+// Inorder traversal
+void traverseInOrder(struct node *root) {
+    if(root == NULL){
+        return;
+    }
+    else
+    {
+        traverseInOrder(root->left); //first traversing to left
+        cout << root->key<<" "; //if it's the root print that
+        traverseInOrder(root->right); //then traversing the right
+    }
+    
+
+}
+//Creating a node
+struct node *newNode(int val)
+{
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    temp->key = val;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+// Insert a node
+struct node *insertNode(struct node *node, int key) {
+    //if the tree is empty create a new node
+    if (node == NULL)
+    {
+        return newNode(key);
+    }
+    //otherwise find the proper place and add the node
+    if (key<node->key) 
+    {
+        node->left = insertNode(node->left, key);  // if the value of the given key is less than that of the root of the key traverse to the left side
+    }
+    else
+    {
+        node->right = insertNode(node->right,key); // if the value of the given key is greater than that of the root of the key traverse to the right side
+    }
+    return node;
+    
+
+}
+//Finding the successor when there's two children
+struct node *successor(struct node *node)
+{
+    struct node *current = node;
+    while (current && current->left != NULL)
+    {
+        current = current->left;
+    }
+    return current;
+}
+
+// Deleting a node
+struct node *deleteNode(struct node *root, int key) {
+    //check if the tree is empty
+    if (root == NULL)
+    {
+        return root;
+    }
+    
+    //Finding the node to be deleted
+    if (key<root->key)
+    {
+        root->left = deleteNode(root->left,key); // if the value of the given key is less than that of the root of the key traverse to the left side
+    }
+    else if (key>root->key)
+    {
+        root->right = deleteNode(root->right,key); // if the value of the given key is greater than that of the root of the key traverse to the right side
+    }
+    else //if the key is equal to the number to be deleted
+    {
+        //if the node has no or only one child
+        if (root->left==NULL)
+        {
+            struct node *temp = root->right; //right child is save temporily
+            free(root);
+            return temp;
+        }
+        else if(root->right == NULL)
+        {
+            struct node *temp = root->left; //left child is saved temporily
+            free(root);
+            return temp;
+        }
+        //if the node has two children
+        struct node *temp = successor(root->right);
+        
+        root->key = temp->key;
+        root->right = deleteNode(root->right,temp->key); //deleting the node
+    }
+    return root;
+ 
+}
+
+// Driver code
+int main() {
+  struct node *root = NULL;
+
+  int operation;
+  int operand;
+  cin >> operation;
+
+  while (operation != -1) {
+    switch(operation) {
+      case 1: // insert
+        cin >> operand;
+        root = insertNode(root, operand);
+        cin >> operation;
+        break;
+      case 2: // delete
+        cin >> operand;
+        root = deleteNode(root, operand);
+        cin >> operation;
+        break;
+      default:
+        cout << "Invalid Operator!\n";
+        return 0;
+    }
+  }
+  
+  traverseInOrder(root);
+}
