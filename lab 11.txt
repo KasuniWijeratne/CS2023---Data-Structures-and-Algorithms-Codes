@@ -1,0 +1,46 @@
+#include <iostream>
+using namespace std;
+
+const int vertices = 6;  //no of vertices
+
+int matrix[vertices][vertices] = {
+  {0, 3, 0, 0, 0,1},
+  {3, 0, 2, 1, 10,0},
+  {0, 2, 0, 3, 0,5},    //creating the adjacency matrix
+  {0, 1, 3, 0, 5,0},
+  {0, 10, 0, 5, 0 ,4},
+  {1, 0, 5, 0, 4 ,0}};
+
+int main() {
+  
+  bool connected[vertices]  = {false}; //to keep track of connected vertices
+  int edges = 0;     //to make sure all vertices are connected
+  connected[0] = true;  //to select the starting node
+
+  while (edges < vertices - 1) 
+  {
+    int min = 99999999;   //to find out the min weight
+    int row = 0;    
+    int column = 0;
+
+    for (int i = 0; i < vertices; i++) {   
+      if (connected[i]) {//to get the vertices we can join the next vertice from
+        for (int j = 0; j < vertices; j++) { 
+          if (!connected[j] && matrix[i][j]) {  //to select a vertice that is not already connected and has a edge connecting from alreading connected vertice
+            if (min > matrix[i][j]) {  //selecting the edge with the minimum weight
+              min = matrix[i][j];
+              row = i;
+              column = j;
+            }
+          }
+        }
+      }
+    }
+    connected[column] = true; // 
+    edges++;
+    cout << "("<<row << " ----- " << column << ")"<<" --->  " << matrix[row][column];  //print the MST
+    cout << endl;
+  }
+
+  return 0;
+}
