@@ -65,7 +65,7 @@ int main()
         total+=short_dist[i];
     }
     cout << endl;
-    cout << "Average distance \t" << total/V << endl;
+    cout << "Average distance \t" << total/(V-1) << endl;
     
     return 0;
 }
