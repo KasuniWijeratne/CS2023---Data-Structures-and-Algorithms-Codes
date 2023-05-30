@@ -1,0 +1,72 @@
+#include <iostream>
+using namespace std;
+#include <limits.h>
+
+const int INF = 1000000; //defining a large number
+const int V = 6;  //no of cities
+
+
+//function to find the minimum distance
+int shortest(int short_dist[],bool checked[])
+{
+    int min = INF;
+    int min_vertex;
+    for (int i=0;i<V;i++)
+    {
+        if (checked[i] == false && short_dist[i]<=min)  //to check if not found shortest distance prior and now has the shortest distance
+        {
+            min = short_dist[i];
+            min_vertex = i;
+        }
+    }
+    return min_vertex;
+}
+
+
+bool checked [V]= {false};
+int short_dist[V]  ; //to store the shortest distances
+
+    
+void dijkstra(int cities[V][V] , int start)
+{
+    for (int i = 0; i < V; i++)
+    {
+        short_dist[i] = INF;
+    }
+    short_dist[start] = 0;
+    
+    for (int i=0;i<V-1;i++)
+    {
+        int u = shortest(short_dist,checked);  //getting the vertex with the shortest distance
+        checked[u] = true;
+        for (int j=0;j<V;j++)
+        {
+            if (cities[u][j]!=0 && short_dist[j]>short_dist[u]+cities[u][j] && checked[j] == false && short_dist[u] != INF) //updating adajacent nodes
+            {
+                short_dist[j] = short_dist[u]+cities[u][j];
+            }
+        }
+    }
+}
+
+int main()
+{
+    int cities[V][V] = {{0,10,0,0,15,5},{10,0,10,30,0,0},{0,10,0,12,5,0},{0,30,12,0,0,20},{15,0,5,0,0,0},{5,0,0,20,0,0}};
+    
+    int start = 5;
+    dijkstra(cities,start);
+    
+    cout << "Start node \t" << start << endl;
+    cout << endl;
+    cout << "City \t Shortest distance" << endl;
+    int total = 0;
+    for (int i=0;i<V;i++)
+    {
+        cout << i << "\t\t\t\t" <<short_dist[i]<< endl;
+        total+=short_dist[i];
+    }
+    cout << endl;
+    cout << "Average distance \t" << total/V << endl;
+    
+    return 0;
+}
