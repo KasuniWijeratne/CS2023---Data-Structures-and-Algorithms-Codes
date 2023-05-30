@@ -1,6 +1,5 @@
 #include <iostream>
 using namespace std;
-#include <limits.h>
 
 const int INF = 1000000; //defining a large number
 const int V = 6;  //no of cities
